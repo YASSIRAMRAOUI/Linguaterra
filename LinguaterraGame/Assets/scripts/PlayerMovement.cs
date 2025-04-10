@@ -11,8 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Component References")]
     private Rigidbody2D rb;
     private Animator animator;
-    private bool isGrounded;
-
+    [Tooltip("Animator component for player animations")]
+    private bool isGrounded = true; // Initialize to false
     void Start()
     {
         // Get required components
@@ -33,33 +33,37 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
+        HandleInput();
         HandleJump();
     }
 
-    void HandleMovement()
+    void HandleInput()
     {
-        // Get horizontal input
         float moveInput = Input.GetAxisRaw("Horizontal");
 
-        // Apply movement
+        if (Mathf.Abs(moveInput) > 0)
+        {
+            animator.SetFloat("Speed", Mathf.Abs(moveInput)); // Set speed for animation
+
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0); // Reset speed if no input
+
+        }
+
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
 
-        // Calculate animation speed with threshold
-        float horizontalSpeed = Mathf.Abs(rb.velocity.x);
-        float animationSpeed = horizontalSpeed > animationThreshold ? horizontalSpeed : 0f;
-        animator.SetFloat("Speed", animationSpeed);
-
-        // Flip character sprite based on movement direction
         if (moveInput > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(0.28f, 0.3f, 1f);
         }
         else if (moveInput < 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-0.28f, 0.3f, 1f);
         }
     }
+
 
     void HandleJump()
     {
@@ -68,8 +72,11 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetTrigger("Jump");
-            isGrounded = false;
+            isGrounded = false; // Player is no longer grounded after jumping
+            animator.SetBool("isGrounded", isGrounded); // Update animator after jump logic
+
         }
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -78,13 +85,11 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = true;
         }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        else
         {
-            isGrounded = false;
+            isGrounded = false; // Reset grounded state if not colliding with ground
         }
     }
+
+
 }
