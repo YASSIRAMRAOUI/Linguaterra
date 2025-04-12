@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "D:\\Linguaterra\\LinguaterraGame\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|d:\\linguaterra\\linguaterragame\\assets\\2d animated pirate\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|solutionrelative:assets\\2d animated pirate\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|D:\\Linguaterra\\LinguaterraGame\\assets\\scripts\\quizui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\quizui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|d:\\linguaterra\\linguaterragame\\assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|d:\\linguaterra\\linguaterragame\\assets\\scripts\\lettreinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lettreinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|d:\\linguaterra\\linguaterragame\\assets\\scripts\\togglemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\togglemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|D:\\Linguaterra\\LinguaterraGame\\assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|D:\\Linguaterra\\LinguaterraGame\\assets\\2d animated pirate\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{4AB16061-8C72-D2DA-E7DF-7C8E6C58898B}|Assembly-CSharp.csproj|solutionrelative:assets\\2d animated pirate\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\NewBehaviourScript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -22,11 +34,50 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ToggleManager.cs",
+              "DocumentMoniker": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\ToggleManager.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\ToggleManager.cs",
+              "ToolTip": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\ToggleManager.cs",
+              "RelativeToolTip": "Assets\\scripts\\ToggleManager.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAUwDAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T14:53:08.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LettreInteraction.cs",
+              "DocumentMoniker": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\LettreInteraction.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\LettreInteraction.cs",
+              "ToolTip": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\LettreInteraction.cs",
+              "RelativeToolTip": "Assets\\scripts\\LettreInteraction.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAcwCQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T09:48:58.74Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "QuizUI.cs",
+              "DocumentMoniker": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\QuizUI.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\QuizUI.cs",
+              "ToolTip": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\QuizUI.cs",
+              "RelativeToolTip": "Assets\\scripts\\QuizUI.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAcwE8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T09:34:22.129Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "readMe.txt",
               "DocumentMoniker": "D:\\Linguaterra\\LinguaterraGame\\Assets\\2D Animated Pirate\\readMe.txt",
               "RelativeDocumentMoniker": "Assets\\2D Animated Pirate\\readMe.txt",
@@ -34,25 +85,23 @@
               "RelativeToolTip": "Assets\\2D Animated Pirate\\readMe.txt",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2025-04-09T14:18:29.131Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-09T14:18:29.131Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "PlayerMovement.cs",
               "DocumentMoniker": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\PlayerMovement.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\PlayerMovement.cs",
               "ToolTip": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\PlayerMovement.cs",
               "RelativeToolTip": "Assets\\scripts\\PlayerMovement.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAADwvyUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAwwFkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-04T00:26:09.274Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-04T00:26:09.274Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "NewBehaviourScript.cs",
               "DocumentMoniker": "D:\\Linguaterra\\LinguaterraGame\\Assets\\scripts\\NewBehaviourScript.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\NewBehaviourScript.cs",
