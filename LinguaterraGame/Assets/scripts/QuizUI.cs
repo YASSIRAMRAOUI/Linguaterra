@@ -64,7 +64,7 @@ public class QuizUI : MonoBehaviour
         }
         else
         {
-            questionText.text = $"Incorrect. Essayez encore !";
+            questionText.text = $"Incorrect. Essaies encore !";
         }
     }
 

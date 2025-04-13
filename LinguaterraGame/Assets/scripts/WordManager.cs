@@ -1,53 +1,83 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 
 public class WordManager : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public TextMeshProUGUI wordPanelText; // Référence au TextMeshPro qui affiche les lettres
+    [Header("Ã‰lÃ©ments UI")]
+    public TextMeshProUGUI wordPanelText; // Texte qui affiche le mot avec les trous
+    public GameObject victoryPanel; // Panel Ã  activer quand le mot est trouvÃ©
 
-    [Header("Mot à découvrir")]
-    public string wordToFind = "A E U I O"; // Le mot à découvrir (peut être modifié dans l'éditeur)
-    private string currentWord; // Mot avec lettres découvertes
-    private int wordLength; // Longueur du mot à découvrir
+    [Header("Configuration")]
+    public string wordToFind = "A E U I O"; // Mot Ã  deviner (avec espaces)
 
-    // Appelée au démarrage pour initialiser l'affichage
+    private string hiddenWord; // Version cachÃ©e du mot
+    private string displayedWord; // Mot affichÃ© avec les lettres trouvÃ©es
+
     void Start()
     {
-        // Initialiser le mot avec des underscores
-        wordLength = wordToFind.Length;
-        currentWord = new string('_', wordLength); // Crée un mot comme "_ _ _ _ _ _"
-        wordPanelText.text = currentWord; // Affiche ce mot au début
+        InitializeWord();
     }
 
-    // Méthode pour mettre à jour le mot à découvrir
-    public void UpdateWord(string letter)
+    void InitializeWord()
     {
-        bool letterFound = false;
+        // CrÃ©e une version cachÃ©e sans espaces pour le traitement
+        hiddenWord = wordToFind.Replace(" ", "");
 
-        // Vérifie chaque lettre du mot à découvrir
-        char[] wordArray = currentWord.ToCharArray();
-        for (int i = 0; i < wordLength; i++)
+        // Initialise l'affichage avec des underscores et espaces
+        displayedWord = new string('_', hiddenWord.Length);
+        UpdateDisplay();
+
+        // DÃ©sactive le panel de victoire au dÃ©part
+        if (victoryPanel != null)
+            victoryPanel.SetActive(false);
+    }
+
+    public void UpdateWord(string guessedLetter)
+    {
+        bool foundLetter = false;
+        char[] wordArray = displayedWord.ToCharArray();
+
+        // Compare chaque lettre sans tenir compte de la casse
+        for (int i = 0; i < hiddenWord.Length; i++)
         {
-            if (wordToFind[i].ToString() == letter && wordArray[i] == '_')
+            if (char.ToUpper(hiddenWord[i]) == char.ToUpper(guessedLetter[0])
+                && wordArray[i] == '_')
             {
-                wordArray[i] = letter[0]; // Remplace le "_" par la lettre correcte
-                letterFound = true;
+                wordArray[i] = wordToFind[i * 2]; // Prend la casse originale
+                foundLetter = true;
             }
         }
 
-        // Si la lettre a été trouvée, mettre à jour l'affichage
-        if (letterFound)
+        if (foundLetter)
         {
-            currentWord = new string(wordArray); // Met à jour le mot affiché
-            wordPanelText.text = currentWord; // Afficher le mot mis à jour
-        }
+            displayedWord = new string(wordArray);
+            UpdateDisplay();
 
-        // Vérifier si toutes les lettres ont été trouvées
-        if (!currentWord.Contains("_"))
-        {
-            Debug.Log("Félicitations ! Vous avez trouvé le mot !");
-            // Tu peux ici ajouter un message pour féliciter le joueur ou d'autres actions (ex: victoire)
+            // VÃ©rifie si le mot est complet
+            if (!displayedWord.Contains("_"))
+            {
+                ShowVictory();
+            }
         }
+    }
+
+    void UpdateDisplay()
+    {
+        // Ajoute des espaces entre les caractÃ¨res pour l'affichage
+        wordPanelText.text = string.Join(" ", displayedWord.ToCharArray());
+    }
+
+    void ShowVictory()
+    {
+        Debug.Log("Mot complet trouvÃ© !");
+
+        if (victoryPanel != null)
+            victoryPanel.SetActive(true);
+    }
+
+    // Optionnel : Pour rÃ©initialiser le jeu
+    public void ResetGame()
+    {
+        InitializeWord();
     }
 }
