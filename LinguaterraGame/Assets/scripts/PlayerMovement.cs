@@ -12,7 +12,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     [Tooltip("Animator component for player animations")]
-    private bool isGrounded = true; // Initialize to false
+    private bool isGrounded = true; // Initialize to true!  Important change
+    private Vector3 respawnPosition = new Vector3(-3.5f, 0.5f,-25.2f); // Default respawn position
+
     void Start()
     {
         // Get required components
@@ -29,12 +31,20 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("🚨 Animator manquant sur " + gameObject.name);
         }
+
+        animator.SetBool("isGrounded", isGrounded); // Initialize animator's isGrounded
     }
 
     void Update()
     {
         HandleInput();
         HandleJump();
+    }
+
+    // FixedUpdate is better for physics
+    void FixedUpdate()
+    {
+        HandleMovement(); // Move the movement logic to FixedUpdate
     }
 
     void HandleInput()
@@ -44,16 +54,13 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(moveInput) > 0)
         {
             animator.SetFloat("Speed", Mathf.Abs(moveInput)); // Set speed for animation
-
         }
         else
         {
             animator.SetFloat("Speed", 0); // Reset speed if no input
-
         }
 
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
-
+        //  The velocity is set in FixedUpdate now
         if (moveInput > 0)
         {
             transform.localScale = new Vector3(0.28f, 0.3f, 1f);
@@ -64,6 +71,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void HandleMovement()
+    {
+        float moveInput = Input.GetAxisRaw("Horizontal");
+        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+    }
 
     void HandleJump()
     {
@@ -74,9 +86,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Jump");
             isGrounded = false; // Player is no longer grounded after jumping
             animator.SetBool("isGrounded", isGrounded); // Update animator after jump logic
-
         }
-
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -84,12 +94,32 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false; // Reset grounded state if not colliding with ground
+            animator.SetBool("isGrounded", isGrounded); // Update animator
         }
     }
 
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+            animator.SetBool("isGrounded", isGrounded); // Update animator
+        }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision) // Use OnTrigger for respawn
+    {
+        if (collision.CompareTag("respawn"))
+        {
+            RespawnPlayer(respawnPosition);
+        }
+    }
+
+    public void RespawnPlayer(Vector3 respawnPosition) // Corrected method name
+    {
+        transform.position = respawnPosition;
+        rb.velocity = Vector3.zero; // Reset velocity on respawn
+        isGrounded = true; // Reset grounded state on respawn
+        animator.SetBool("isGrounded", isGrounded); // Update animator after respawn
+    }
 }
