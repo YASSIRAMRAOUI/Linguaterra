@@ -29,7 +29,7 @@ public class QuizUI : MonoBehaviour
         optionsSons = sonsOptions;
         sonSelectionne = null;
 
-        questionText.text = $"Quel son correspond à la lettre {lettre} ?";
+        questionText.text = $"Choisis le son qui correspond à la lettre {lettre} en cliquant sur l'un des boutons ci-dessous puis valide ta réponse";
 
         // Configurer les boutons
         ConfigureButton(buttonA, 0);
