@@ -3,8 +3,8 @@
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;
-    public float jumpForce = 7f;
+    public float moveSpeed = 1f;
+    public float jumpForce = 1f;
     [Tooltip("Minimum speed to trigger walking animation")]
     public float animationThreshold = 0.1f;
 
@@ -63,11 +63,11 @@ public class PlayerMovement : MonoBehaviour
         //  The velocity is set in FixedUpdate now
         if (moveInput > 0)
         {
-            transform.localScale = new Vector3(0.28f, 0.3f, 1f);
+            transform.localScale = new Vector3(0.05f, 0.05f, 1f);
         }
         else if (moveInput < 0)
         {
-            transform.localScale = new Vector3(-0.28f, 0.3f, 1f);
+            transform.localScale = new Vector3(-0.05f, 0.05f, 1f);
         }
     }
 
