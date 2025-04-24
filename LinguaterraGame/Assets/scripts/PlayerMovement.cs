@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     [Tooltip("Animator component for player animations")]
     private bool isGrounded = true; // Initialize to true!  Important change
-    private Vector3 respawnPosition = new Vector3(-3.5f, 0.5f,-25.2f); // Default respawn position
+    [HideInInspector] public Vector3 respawnPosition; // Public but hidden, set from PlayerHealth
 
     void Start()
     {
@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError("🚨 Animator manquant sur " + gameObject.name);
         }
 
+        // Initialize respawn position to the starting position
+        respawnPosition = transform.position;
         animator.SetBool("isGrounded", isGrounded); // Initialize animator's isGrounded
     }
 
@@ -107,19 +109,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) // Use OnTrigger for respawn
-    {
-        if (collision.CompareTag("respawn"))
-        {
-            RespawnPlayer(respawnPosition);
-        }
-    }
+    // Removed OnTriggerEnter2D for "respawn" tag
 
-    public void RespawnPlayer(Vector3 respawnPosition) // Corrected method name
+    public void RespawnPlayer() // Corrected method name and no parameters
     {
         transform.position = respawnPosition;
         rb.velocity = Vector3.zero; // Reset velocity on respawn
         isGrounded = true; // Reset grounded state on respawn
         animator.SetBool("isGrounded", isGrounded); // Update animator after respawn
+    }
+
+    // Public method to update the respawn position (e.g., at checkpoints)
+    public void SetRespawnPosition(Vector3 newRespawnPosition)
+    {
+        respawnPosition = newRespawnPosition;
     }
 }
