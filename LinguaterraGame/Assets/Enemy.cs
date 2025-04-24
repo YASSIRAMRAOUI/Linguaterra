@@ -118,31 +118,34 @@ public class ConsonantEnemy : MonoBehaviour
     }
 
     void HandleEnemyDeath(Collision2D collision)
+{
+    isDead = true;
+    Debug.Log("Player interacted with " + gameObject.name + ", enemy dies!");
+    AudioManager.instance?.PlaySoundEffect(consonantSound);
+
+    Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+    if (playerRb != null)
     {
-        isDead = true;
-        Debug.Log("Player interacted with " + gameObject.name + ", enemy dies!");
-        AudioManager.instance?.PlaySoundEffect(consonantSound);
-
-        Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (playerRb != null)
-        {
-            Vector2 pushDirection = moveDirection == MoveDirection.Horizontal ? Vector2.down : moveDirection == MoveDirection.Vertical ? Vector2.left : Vector2.zero;
-            playerRb.velocity = new Vector2(playerRb.velocity.x, playerRb.velocity.y) + pushDirection * playerDescentSpeed; // Apply direction
-        }
-
-        enemyCollider.enabled = false;
-        rb.velocity = Vector2.zero;
-
-        if (deathEffectPrefab != null)
-        {
-            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-        }
-
-        if (animator != null)
-        {
-            animator.SetTrigger("Die"); // Trigger death animation if available
-        }
-
-        Destroy(gameObject, deathDelay);
+        Vector2 pushDirection = moveDirection == MoveDirection.Horizontal ? Vector2.down : moveDirection == MoveDirection.Vertical ? Vector2.left : Vector2.zero;
+        playerRb.velocity = new Vector2(playerRb.velocity.x, playerRb.velocity.y) + pushDirection * playerDescentSpeed;
     }
+
+    enemyCollider.enabled = false;
+    rb.velocity = Vector2.zero;
+
+    if (deathEffectPrefab != null)
+    {
+        Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+    }
+
+    if (animator != null)
+    {
+        animator.SetTrigger("Die");
+    }
+
+    // Add this line to award points:
+    ScoreManager.instance.AddScore(ScoreManager.instance.scorePerKill); // Access the instance and call the function.
+
+    Destroy(gameObject, deathDelay);
+}
 }
