@@ -11,28 +11,20 @@ public class PlayerMovement : MonoBehaviour
     [Header("Component References")]
     private Rigidbody2D rb;
     private Animator animator;
-    [Tooltip("Animator component for player animations")]
-    private bool isGrounded = true; // Initialize to true!  Important change
-    private Vector3 respawnPosition = new Vector3(-3.5f, 0.5f,-25.2f); // Default respawn position
+    private bool isGrounded = true;
+    private Vector3 respawnPosition = new Vector3(-3.5f, 0.5f, -25.2f);
+    private Vector3 originalScale;
 
     void Start()
     {
-        // Get required components
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        originalScale = transform.localScale;
 
-        // Error handling if components are missing
-        if (rb == null)
-        {
-            Debug.LogError("🚨 Rigidbody2D manquant sur " + gameObject.name);
-        }
+        if (rb == null) Debug.LogError("🚨 Rigidbody2D manquant");
+        if (animator == null) Debug.LogError("🚨 Animator manquant");
 
-        if (animator == null)
-        {
-            Debug.LogError("🚨 Animator manquant sur " + gameObject.name);
-        }
-
-        animator.SetBool("isGrounded", isGrounded); // Initialize animator's isGrounded
+        animator.SetBool("isGrounded", isGrounded);
     }
 
     void Update()
@@ -41,10 +33,9 @@ public class PlayerMovement : MonoBehaviour
         HandleJump();
     }
 
-    // FixedUpdate is better for physics
     void FixedUpdate()
     {
-        HandleMovement(); // Move the movement logic to FixedUpdate
+        HandleMovement();
     }
 
     void HandleInput()
@@ -53,21 +44,20 @@ public class PlayerMovement : MonoBehaviour
 
         if (Mathf.Abs(moveInput) > 0)
         {
-            animator.SetFloat("Speed", Mathf.Abs(moveInput)); // Set speed for animation
+            animator.SetFloat("Speed", Mathf.Abs(moveInput));
         }
         else
         {
-            animator.SetFloat("Speed", 0); // Reset speed if no input
+            animator.SetFloat("Speed", 0);
         }
 
-        //  The velocity is set in FixedUpdate now
         if (moveInput > 0)
         {
-            transform.localScale = new Vector3(0.28f, 0.3f, 1f);
+            transform.localScale = new Vector3(Mathf.Abs(originalScale.x), originalScale.y, originalScale.z);
         }
         else if (moveInput < 0)
         {
-            transform.localScale = new Vector3(-0.28f, 0.3f, 1f);
+            transform.localScale = new Vector3(-Mathf.Abs(originalScale.x), originalScale.y, originalScale.z);
         }
     }
 
@@ -79,13 +69,12 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleJump()
     {
-        // Jump if grounded and jump button pressed
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetTrigger("Jump");
-            isGrounded = false; // Player is no longer grounded after jumping
-            animator.SetBool("isGrounded", isGrounded); // Update animator after jump logic
+            isGrounded = false;
+            animator.SetBool("isGrounded", isGrounded);
         }
     }
 
@@ -94,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            animator.SetBool("isGrounded", isGrounded); // Update animator
+            animator.SetBool("isGrounded", isGrounded);
         }
     }
 
@@ -103,11 +92,11 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
-            animator.SetBool("isGrounded", isGrounded); // Update animator
+            animator.SetBool("isGrounded", isGrounded);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) // Use OnTrigger for respawn
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("respawn"))
         {
@@ -115,11 +104,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void RespawnPlayer(Vector3 respawnPosition) // Corrected method name
+    public void RespawnPlayer(Vector3 respawnPosition)
     {
         transform.position = respawnPosition;
-        rb.velocity = Vector3.zero; // Reset velocity on respawn
-        isGrounded = true; // Reset grounded state on respawn
-        animator.SetBool("isGrounded", isGrounded); // Update animator after respawn
+        rb.velocity = Vector3.zero;
+        isGrounded = true;
+        animator.SetBool("isGrounded", isGrounded);
     }
 }

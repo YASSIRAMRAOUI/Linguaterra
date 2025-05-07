@@ -14,10 +14,15 @@ public class ToggleManager : MonoBehaviour
     // Start est appelé avant la première image
     void Start()
     {
-        // Initialiser l'état des flèches en les désactivant
+        // D'abord forcer tous les toggles à être éteints
+        toggleA.isOn = false;
+        toggleB.isOn = false;
+        toggleC.isOn = false;
+
+        // Puis désactiver toutes les flèches
         DeselectArrows();
 
-        // Associer les événements de changement de valeur des toggles
+        // Ensuite seulement, écouter les changements
         toggleA.onValueChanged.AddListener((isOn) => OnToggleChanged(toggleA, isOn, arrowA));
         toggleB.onValueChanged.AddListener((isOn) => OnToggleChanged(toggleB, isOn, arrowB));
         toggleC.onValueChanged.AddListener((isOn) => OnToggleChanged(toggleC, isOn, arrowC));
