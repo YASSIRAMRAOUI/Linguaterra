@@ -8,16 +8,16 @@ public class ConsonantEnemy : MonoBehaviour
     public float moveSpeed = 2f;
     public float moveDistance = 3f;
     public float startPositionOffset = 0f;
-    public MoveDirection moveDirection = MoveDirection.Horizontal; // New: Movement direction
-    public float movePauseTime = 0f; // Pause at ends of movement
+    public MoveDirection moveDirection = MoveDirection.Horizontal;
+    public float movePauseTime = 0f;
     private Vector3 initialPosition;
     private Vector3 minPosition;
     private Vector3 maxPosition;
-    private bool movingForward = true; // Renamed for clarity
+    private bool movingForward = true;
     private float movePauseTimer = 0f;
 
     [Header("Interaction Settings")]
-    public string consonantSound = "default_consonant"; // Customizable sound
+    public string consonantSound = "default_consonant";
     public float playerDescentSpeed = 5f;
     public string playerTag = "Player";
     public float deathDelay = 0.2f;
@@ -26,7 +26,7 @@ public class ConsonantEnemy : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D enemyCollider;
     private bool isDead = false;
-    private Animator animator; // Optional Animator
+    private Animator animator;
 
     public enum MoveDirection
     {
@@ -36,14 +36,14 @@ public class ConsonantEnemy : MonoBehaviour
 
     void Start()
     {
-        initialPosition = transform.position + GetDirectionVector() * startPositionOffset; // Use GetDirectionVector
+        initialPosition = transform.position + GetDirectionVector() * startPositionOffset;
         minPosition = initialPosition - GetDirectionVector() * moveDistance / 2f;
         maxPosition = initialPosition + GetDirectionVector() * moveDistance / 2f;
         transform.position = initialPosition;
 
         rb = GetComponent<Rigidbody2D>();
         enemyCollider = GetComponent<Collider2D>();
-        animator = GetComponent<Animator>(); // Get Animator (optional)
+        animator = GetComponent<Animator>();
 
         if (rb == null)
         {
@@ -53,22 +53,29 @@ public class ConsonantEnemy : MonoBehaviour
         {
             Debug.LogError("Collider2D missing on enemy: " + gameObject.name);
         }
+
+        ConsonantLetterManager.instance?.RegisterEnemy(this); // Register with the manager
+    }
+
+    void OnDestroy()
+    {
+        ConsonantLetterManager.instance?.UnregisterEnemy(this); // Unregister when destroyed
     }
 
     void Update()
     {
         if (!isDead)
         {
-            Move(); // Renamed MoveHorizontally to Move for generality
+            Move();
         }
     }
 
-    void Move() // Renamed and generalized
+    void Move()
     {
         if (movePauseTimer > 0)
         {
             movePauseTimer -= Time.deltaTime;
-            rb.velocity = Vector2.zero; // Stop movement during pause
+            rb.velocity = Vector2.zero;
             return;
         }
 
@@ -95,7 +102,7 @@ public class ConsonantEnemy : MonoBehaviour
         }
     }
 
-    Vector3 GetDirectionVector() // Helper function for direction
+    Vector3 GetDirectionVector()
     {
         return moveDirection == MoveDirection.Horizontal ? Vector3.right : Vector3.up;
     }
@@ -118,34 +125,56 @@ public class ConsonantEnemy : MonoBehaviour
     }
 
     void HandleEnemyDeath(Collision2D collision)
-{
-    isDead = true;
-    Debug.Log("Player interacted with " + gameObject.name + ", enemy dies!");
-    AudioManager.instance?.PlaySoundEffect(consonantSound);
-
-    Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
-    if (playerRb != null)
     {
-        Vector2 pushDirection = moveDirection == MoveDirection.Horizontal ? Vector2.down : moveDirection == MoveDirection.Vertical ? Vector2.left : Vector2.zero;
-        playerRb.velocity = new Vector2(playerRb.velocity.x, playerRb.velocity.y) + pushDirection * playerDescentSpeed;
+        isDead = true;
+        Debug.Log("Player interacted with " + gameObject.name + ", enemy dies!");
+        AudioManager.instance?.PlaySoundEffect(consonantSound);
+
+        Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+        if (playerRb != null)
+        {
+            Vector2 pushDirection = moveDirection == MoveDirection.Horizontal ? Vector2.down : moveDirection == MoveDirection.Vertical ? Vector2.left : Vector2.zero;
+            playerRb.velocity = new Vector2(playerRb.velocity.x, playerRb.velocity.y) + pushDirection * playerDescentSpeed;
+        }
+
+        enemyCollider.enabled = false;
+        rb.velocity = Vector2.zero;
+
+        if (deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+        }
+
+        if (ScoreManager.instance != null)
+        {
+            ScoreManager.instance.AddScore(ScoreManager.instance.scorePerKill);
+        }
+
+        Destroy(gameObject, deathDelay);
     }
 
-    enemyCollider.enabled = false;
-    rb.velocity = Vector2.zero;
-
-    if (deathEffectPrefab != null)
+    public void ResetEnemy()
     {
-        Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        isDead = false;
+        transform.position = initialPosition;
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+        if (enemyCollider != null)
+        {
+            enemyCollider.enabled = true;
+        }
+        if (animator != null)
+        {
+            animator.SetBool("isDead", false);
+        }
+        Debug.Log(gameObject.name + " has been reset.");
+        
     }
-
-    if (animator != null)
-    {
-        animator.SetTrigger("Die");
-    }
-
-    // Add this line to award points:
-    ScoreManager.instance.AddScore(ScoreManager.instance.scorePerKill); // Access the instance and call the function.
-
-    Destroy(gameObject, deathDelay);
-}
 }

@@ -14,13 +14,29 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Respawn Settings")]
     public float respawnDelay = 2f;
-    private bool isDead = false;
+    public bool isDead = false;
     private SpriteRenderer playerRenderer;
     private Collider2D playerCollider;
     private PlayerMovement playerMovementScript; // Reference to PlayerMovement
 
     [Header("UI References")]
     public Slider healthBarSlider;
+
+    public static PlayerHealth instance; // Singleton instance
+    public ConsonantEnemy enemy; // Reference to PlayerHealth
+    void Awake()
+    {
+        // Singleton pattern
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
     void Start()
     {
@@ -96,11 +112,13 @@ public class PlayerHealth : MonoBehaviour
             playerRenderer.enabled = false;
         }
 
+        // **Crucial Change: Restart the timer**
+        IslandTimer.instance?.StartIslandTimer(); // Restart the timer when the player dies
         // Initiate respawn after a delay
         Invoke("Respawn", respawnDelay);
     }
 
-    void Respawn()
+    public void Respawn()
     {
         isDead = false;
         currentHealth = maxHealth;
@@ -129,6 +147,9 @@ public class PlayerHealth : MonoBehaviour
 
         UpdateHealthUI();
         Debug.Log("Player has respawned!");
+
+        // **Important: Reset other game elements here**
+        ResetGameElements();
     }
 
     void UpdateHealthUI()
@@ -142,5 +163,15 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.LogError("Health Bar Slider not assigned in PlayerHealth script!");
         }
+    }
+
+    void ResetGameElements()
+    {
+        // Reset the score
+        //ScoreManager.instance?.ResetScore(); // Assuming you add ResetScore() to ScoreManager
+
+        // Reset the "died letters" (Assuming you have a manager for them)
+        enemy?.ResetEnemy(); // Reset the enemy if needed
+        // Add more reset logic here for other elements as needed
     }
 }

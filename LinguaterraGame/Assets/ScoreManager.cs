@@ -1,15 +1,15 @@
 using UnityEngine;
-using UnityEngine.UI; // For UI elements
+using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public int scorePerKill = 10; // Points awarded for each enemy kill
+    public int scorePerKill = 10;
     private int currentScore = 0;
 
     [Header("UI Display")]
-    public Text scoreText; // Assign a UI Text element in the Inspector
+    public Text scoreText;
 
-    public static ScoreManager instance; // Singleton instance for easy access
+    public static ScoreManager instance;
 
     void Awake()
     {
@@ -29,7 +29,7 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        UpdateScoreText(); // Initialize the score display
+        UpdateScoreText();
     }
 
     public void AddScore(int points)
@@ -48,11 +48,19 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = "Score: " + currentScore; // Or any format you like
+            scoreText.text = "Score: " + currentScore;
         }
         else
         {
             Debug.LogWarning("Score Text not assigned in ScoreManager script!");
         }
+    }
+
+    // **New: Reset Score Function**
+    public void ResetScore()
+    {
+        currentScore = 0;
+        UpdateScoreText();
+        Debug.Log("Score reset!");
     }
 }

@@ -1,23 +1,22 @@
 using UnityEngine;
-using UnityEngine.UI; // If you want to display the timer on a UI Text element
-using System; // For TimeSpan
+using UnityEngine.UI;
+using System;
 
 public class IslandTimer : MonoBehaviour
 {
-    public float islandDurationSeconds = 120f; // Total time allowed for the island (in seconds)
+    public float islandDurationSeconds = 120f;
     private float timeRemaining;
     private bool timerIsRunning = false;
 
     [Header("UI Display (Optional)")]
-    public Text timerText; // Assign a UI Text element in the Inspector
+    public Text timerText;
 
-    public static IslandTimer instance; // Singleton instance for easy access
+    public static IslandTimer instance;
 
-    public event Action OnIslandTimeExpired; // Event that other scripts can subscribe to
+    public event Action OnIslandTimeExpired;
 
     void Awake()
     {
-        // Singleton pattern
         if (instance == null)
         {
             instance = this;
@@ -31,7 +30,7 @@ public class IslandTimer : MonoBehaviour
 
     void Start()
     {
-        StartIslandTimer();
+        // StartIslandTimer();  // REMOVED:  Don't start timer automatically
     }
 
     void Update()
@@ -50,9 +49,8 @@ public class IslandTimer : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 Debug.Log("Island time has expired!");
-                OnIslandTimeExpired?.Invoke(); // Fire the time expired event
-                // You can add logic here for what happens when time runs out
-                // (e.g., show a game over UI, transition to the next stage)
+                OnIslandTimeExpired?.Invoke();
+                PlayerHealth.instance?.Respawn();
             }
         }
     }
@@ -77,18 +75,15 @@ public class IslandTimer : MonoBehaviour
     private void UpdateTimerDisplay()
     {
         TimeSpan timeSpan = TimeSpan.FromSeconds(timeRemaining);
-        // Format the time as minutes:seconds (e.g., 02:00)
         string timeString = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
         timerText.text = timeString;
     }
 
-    // Optional: Get the remaining time
     public float GetRemainingTime()
     {
         return timeRemaining;
     }
 
-    // Optional: Check if the timer is running
     public bool IsTimerRunning()
     {
         return timerIsRunning;
