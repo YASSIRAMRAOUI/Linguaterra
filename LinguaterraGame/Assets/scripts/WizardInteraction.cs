@@ -52,7 +52,7 @@ public class WizardInteraction : MonoBehaviour
 
         dialogueBubble.SetActive(true);
 
-        bool targetReached = ScoreManager.Instance.GetScore() >= targetScore;
+        bool targetReached = ScoreManager1.Instance.GetScore() >= targetScore;
 
         dialogueText.text = targetReached
             ? "Well done! You’ve found all the letters! Here is the magic key to unlock the next island."

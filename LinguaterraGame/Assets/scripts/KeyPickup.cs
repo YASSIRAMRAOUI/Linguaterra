@@ -1,21 +1,26 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class KeyPickup : MonoBehaviour
 {
-    public WordManager wordManager; // Référence au WordManager
+    public ScoreManager1 ScoreManager; // Rï¿½fï¿½rence au WordManager
 
     private void OnTriggerEnter(Collider other)
     {
-        // Vérifie si le joueur touche la clé ET si toutes les lettres sont trouvées
-        if (other.CompareTag("Player") && wordManager.allLettersFound)
+        // Vï¿½rifie si le joueur touche la clï¿½ ET si toutes les lettres sont trouvï¿½es
+        if (other.CompareTag("Player") && ScoreManager.GetScore() == 200)
         {
-            Debug.Log("Clé ramassée !");
-            // Fais suivre la clé au joueur (ex: la mettre comme enfant du joueur)
+            Debug.Log("Clï¿½ ramassï¿½e !");
+            // Fais suivre la clï¿½ au joueur (ex: la mettre comme enfant du joueur)
             transform.SetParent(other.transform);
             transform.localPosition = Vector3.up * 1.5f; // Position au-dessus du joueur
 
-            // Désactive le collider pour éviter de répéter l'action
+            // Dï¿½sactive le collider pour ï¿½viter de rï¿½pï¿½ter l'action
             GetComponent<Collider>().enabled = false;
+
+            SceneManager.LoadScene("ile2");
+            Debug.Log("Chargement de la scï¿½ne ile2");
         }
     }
 }

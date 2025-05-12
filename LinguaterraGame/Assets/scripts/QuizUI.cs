@@ -162,7 +162,7 @@ public class QuizUI : MonoBehaviour
 
             if (wordManager != null && !currentLettreInteraction.HasScored())
             {
-                ScoreManager.Instance.AddPoints(40);
+                ScoreManager1.Instance.AddPoints(40);
                 wordManager.UpdateWord(currentLetter);
                 currentLettreInteraction.SetScored(); // Marquer que les points ont été ajoutés
             }

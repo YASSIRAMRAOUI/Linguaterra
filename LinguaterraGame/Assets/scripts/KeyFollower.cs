@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KeyFollow : MonoBehaviour
 {
@@ -31,7 +32,9 @@ public class KeyFollow : MonoBehaviour
             if (FindObjectOfType<WordManager>().allLettersFound)
             {
                 canFollow = true;
-                Debug.Log("La clé commence à suivre le joueur !");
+                SceneManager.LoadScene("ile2");
+                Debug.Log("Chargement de la scène ile2");
+
             }
             else
             {
