@@ -60,15 +60,26 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (isDead) return;
+void OnCollisionEnter2D(Collision2D collision)
+{
+    if (isDead) return;
 
-        if (collision.gameObject.CompareTag(enemyTag))
+    if (collision.gameObject.CompareTag(enemyTag))
+    {
+        Collider2D enemyCollider = collision.collider;
+        float playerBottom = playerCollider.bounds.min.y;
+        float enemyTop = enemyCollider.bounds.max.y;
+
+        // Check if the player's bottom is above the enemy's top by a small margin
+        bool isJumpingOnEnemy = playerBottom > enemyTop - 0.1f;
+
+        if (!isJumpingOnEnemy)
         {
             TakeDamage(damageAmount);
         }
     }
+}
+
 
     public void TakeDamage(float damageAmount)
     {
