@@ -1,21 +1,39 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KeyPickup : MonoBehaviour
 {
-    public WordManager wordManager; // RÈfÈrence au WordManager
+    public WordManager wordManager; // R√©f√©rence au WordManager
+    public string nextSceneName = "ile2";    // Nom de la sc√®ne suivante √† charger
 
     private void OnTriggerEnter(Collider other)
     {
-        // VÈrifie si le joueur touche la clÈ ET si toutes les lettres sont trouvÈes
-        if (other.CompareTag("Player") && wordManager.allLettersFound)
+        // V√©rifie si le joueur touche la cl√© ET si toutes les lettres sont trouv√©es
+        if (other.CompareTag("Player") && wordManager.AllLettersFound())
         {
-            Debug.Log("ClÈ ramassÈe !");
-            // Fais suivre la clÈ au joueur (ex: la mettre comme enfant du joueur)
+            Debug.Log("Cl√© ramass√©e !");
+            
+            // Fais suivre la cl√© au joueur
             transform.SetParent(other.transform);
-            transform.localPosition = Vector3.up * 1.5f; // Position au-dessus du joueur
+            transform.localPosition = Vector3.up * 1.5f;
 
-            // DÈsactive le collider pour Èviter de rÈpÈter l'action
+            // D√©sactive le collider pour √©viter de r√©p√©ter l'action
             GetComponent<Collider>().enabled = false;
+
+            // Charger la sc√®ne suivante
+            LoadNextScene();
+        }
+    }
+
+    void LoadNextScene()
+    {
+        if (!string.IsNullOrEmpty(nextSceneName))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
+        else
+        {
+            Debug.LogWarning("Nom de la sc√®ne suivante non d√©fini !");
         }
     }
 }

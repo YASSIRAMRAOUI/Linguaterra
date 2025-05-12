@@ -1,9 +1,9 @@
 using UnityEngine;
 using TMPro;
 
-public class ScoreManager : MonoBehaviour
+public class ScoreManageril2 : MonoBehaviour
 {
-    public static ScoreManager Instance;
+    public static ScoreManageril2 Instance;
 
     [Header("UI")]
     public TextMeshProUGUI scoreText;
@@ -28,12 +28,12 @@ public class ScoreManager : MonoBehaviour
         score += points;
         UpdateScoreUI();
 
-        // Notifie tous les wizards de la scène
+        // Notifie tous les wizards de la scï¿½ne
         WizardInteraction[] wizards = FindObjectsOfType<WizardInteraction>();
         foreach (WizardInteraction wizard in wizards)
         {
             wizard.OnScoreChanged();
-            wizard.ForceDialogueUpdate(); // Double notification pour compatibilité
+            wizard.ForceDialogueUpdate(); // Double notification pour compatibilitï¿½
         }
     }
 

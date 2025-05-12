@@ -2,75 +2,45 @@ using UnityEngine;
 
 public class LettreInteraction : MonoBehaviour
 {
-    [Header("Configuration")]
     public string lettreName;
     public AudioClip sonCorrect;
-    public AudioClip[] sonsLeurres;
     public GameObject quizUI;
-
-    private bool hasAnsweredCorrectly = false;
-    private bool hasScored = false; // Nouvelle variable pour suivre si les points ont déjà été ajoutés
+    public AudioClip[] sonsLeurres;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && quizUI != null)
         {
-            ShowQuiz();
+            if (sonCorrect == null || sonsLeurres.Length < 2 || sonsLeurres[0] == null || sonsLeurres[1] == null)
+            {
+                Debug.LogError("Configuration audio incomplète!", this);
+                return;
+            }
+
+            AudioClip[] optionsSons = {
+                sonCorrect,
+                sonsLeurres[0],
+                sonsLeurres[1]
+            };
+
+            // Mélanger aléatoirement
+            for (int i = 0; i < optionsSons.Length; i++)
+            {
+                int rnd = Random.Range(i, optionsSons.Length);
+                (optionsSons[rnd], optionsSons[i]) = (optionsSons[i], optionsSons[rnd]);
+            }
+
+            quizUI.GetComponent<QuizUI>().InitialiserQuiz(lettreName, sonCorrect, optionsSons);
+            quizUI.SetActive(true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && quizUI != null)
         {
-            HideQuiz();
-        }
-    }
-
-    private void ShowQuiz()
-    {
-        if (sonCorrect == null || sonsLeurres.Length != 2)
-        {
-            Debug.LogError("Configuration audio manquante !", this);
-            return;
-        }
-
-        AudioClip[] options = new AudioClip[3] { sonCorrect, sonsLeurres[0], sonsLeurres[1] };
-        int correctIndex = 0;
-
-        for (int i = 0; i < options.Length; i++)
-        {
-            int randomIndex = Random.Range(i, options.Length);
-            (options[i], options[randomIndex]) = (options[randomIndex], options[i]);
-            if (options[i] == sonCorrect) correctIndex = i;
-        }
-
-        QuizUI quizComponent = quizUI.GetComponent<QuizUI>();
-        quizComponent.ResetUIComplet();
-        quizComponent.InitialiserQuiz(lettreName, options, correctIndex, this);
-        quizUI.SetActive(true);
-    }
-
-    private void HideQuiz()
-    {
-        if (quizUI != null)
-        {
+            // Lorsque le joueur quitte la zone, on cache le canvas sans changer le mot.
             quizUI.SetActive(false);
         }
-    }
-
-    public void SetAnsweredCorrectly()
-    {
-        hasAnsweredCorrectly = true;
-    }
-
-    public bool HasScored()
-    {
-        return hasScored;
-    }
-
-    public void SetScored()
-    {
-        hasScored = true;
     }
 }

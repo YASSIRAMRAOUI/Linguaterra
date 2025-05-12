@@ -28,7 +28,7 @@ public class KeyFollow : MonoBehaviour
         {
             Debug.Log("La clé entre en collision avec le joueur");
 
-            if (FindObjectOfType<WordManager>().allLettersFound)
+            if (FindObjectOfType<WordManager>().AllLettersFound())
             {
                 canFollow = true;
                 Debug.Log("La clé commence à suivre le joueur !");
