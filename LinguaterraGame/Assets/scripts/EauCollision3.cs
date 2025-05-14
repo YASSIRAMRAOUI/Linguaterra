@@ -10,7 +10,7 @@ public class EauCollision3 : MonoBehaviour
     private PlayerMovement3 playerMovement;
 
     [Header("Respawn Position")]
-    public Vector3 respawnPosition = new Vector3(-3.5f, 0.5f, -25.2f); // Customize as needed
+    public Vector3 respawnPosition = new Vector3(-455f, 39f, -25.2f); // Customize as needed
 
     private void Start()
     {
@@ -32,11 +32,8 @@ public class EauCollision3 : MonoBehaviour
         if (other.CompareTag("Eau"))
         {
             Debug.Log("Entered water.");
-
-            if (playerMovement != null)
-                playerMovement.RespawnPlayer(respawnPosition);
+            playerMovement.RespawnPlayer(respawnPosition);
         }
-
         if (other.CompareTag("Obstacle"))
         {
             Debug.Log("Entered obstacle.");

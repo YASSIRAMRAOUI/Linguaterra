@@ -11,84 +11,66 @@ public class PlayerMovement2 : MonoBehaviour
     [Header("Component References")]
     private Rigidbody2D rb;
     private Animator animator;
-    [Tooltip("Animator component for player animations")]
-    private bool isGrounded = true; // Initialize to true!  Important change
-    [HideInInspector] public Vector3 respawnPosition; // Public but hidden, set from PlayerHealth
+    private bool isGrounded = true;
+
+    [HideInInspector] public Vector3 respawnPosition;
+
+    private float moveInput = 0f;
+    private bool jumpPressed = false;
 
     void Start()
     {
-        // Get required components
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        // Error handling if components are missing
-        if (rb == null)
-        {
-            Debug.LogError("🚨 Rigidbody2D manquant sur " + gameObject.name);
-        }
+        if (rb == null) Debug.LogError("🚨 Rigidbody2D manquant sur " + gameObject.name);
+        if (animator == null) Debug.LogError("🚨 Animator manquant sur " + gameObject.name);
 
-        if (animator == null)
-        {
-            Debug.LogError("🚨 Animator manquant sur " + gameObject.name);
-        }
-
-        // Initialize respawn position to the starting position
         respawnPosition = transform.position;
-        animator.SetBool("isGrounded", isGrounded); // Initialize animator's isGrounded
+        animator.SetBool("isGrounded", isGrounded);
     }
 
     void Update()
     {
-        HandleInput();
         HandleJump();
-    }
 
-    // FixedUpdate is better for physics
-    void FixedUpdate()
-    {
-        HandleMovement(); // Move the movement logic to FixedUpdate
-    }
-
-    void HandleInput()
-    {
-        float moveInput = Input.GetAxisRaw("Horizontal");
-
-        if (Mathf.Abs(moveInput) > 0)
+        // Update animation and flip based on input
+        if (Mathf.Abs(moveInput) > animationThreshold) // Ensure the speed is above the threshold to trigger movement
         {
-            animator.SetFloat("Speed", Mathf.Abs(moveInput)); // Set speed for animation
+            animator.SetFloat("Speed", Mathf.Abs(moveInput));
+            // Flip the sprite based on movement direction
+            transform.localScale = new Vector3(Mathf.Sign(moveInput) * 0.05f, 0.05f, 1f);
         }
         else
         {
-            animator.SetFloat("Speed", 0); // Reset speed if no input
+            animator.SetFloat("Speed", 0);
         }
+    }
 
-        //  The velocity is set in FixedUpdate now
-        if (moveInput > 0)
-        {
-            transform.localScale = new Vector3(0.05f, 0.05f, 1f);
-        }
-        else if (moveInput < 0)
-        {
-            transform.localScale = new Vector3(-0.05f, 0.05f, 1f);
-        }
+    void FixedUpdate()
+    {
+        HandleMovement();
     }
 
     void HandleMovement()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal");
+        // Apply movement on the X-axis based on input, keeping the Y-axis velocity (gravity) unaffected
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
 
     void HandleJump()
     {
-        // Jump if grounded and jump button pressed
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (jumpPressed && isGrounded)
         {
+            // Apply vertical velocity for the jump
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetTrigger("Jump");
-            isGrounded = false; // Player is no longer grounded after jumping
-            animator.SetBool("isGrounded", isGrounded); // Update animator after jump logic
+            isGrounded = false;
+            animator.SetBool("isGrounded", isGrounded);
         }
+
+        // Reset jump flag after applying jump
+        jumpPressed = false;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -96,7 +78,7 @@ public class PlayerMovement2 : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            animator.SetBool("isGrounded", isGrounded); // Update animator
+            animator.SetBool("isGrounded", isGrounded);
         }
     }
 
@@ -105,23 +87,26 @@ public class PlayerMovement2 : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
-            animator.SetBool("isGrounded", isGrounded); // Update animator
+            animator.SetBool("isGrounded", isGrounded);
         }
     }
 
-    // Removed OnTriggerEnter2D for "respawn" tag
-
-    public void RespawnPlayer() // Corrected method name and no parameters
+    public void RespawnPlayer()
     {
         transform.position = respawnPosition;
-        rb.velocity = Vector3.zero; // Reset velocity on respawn
-        isGrounded = true; // Reset grounded state on respawn
-        animator.SetBool("isGrounded", isGrounded); // Update animator after respawn
+        rb.velocity = Vector3.zero;
+        isGrounded = true;
+        animator.SetBool("isGrounded", isGrounded);
     }
 
-    // Public method to update the respawn position (e.g., at checkpoints)
     public void SetRespawnPosition(Vector3 newRespawnPosition)
     {
         respawnPosition = newRespawnPosition;
     }
+
+    // ✅ UI Button Methods
+    public void MoveLeft() => moveInput = -1f;  // Move left when button pressed
+    public void MoveRight() => moveInput = 1f;  // Move right when button pressed
+    public void StopMoving() => moveInput = 0f; // Stop movement when button released
+    public void JumpButtonPressed() => jumpPressed = true;  // Jump when button pressed
 }
