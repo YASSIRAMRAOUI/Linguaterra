@@ -22,6 +22,9 @@ Navigate the winding waterways where letters once merged to form powerful phonem
 ### 🗼 **Tower of Lexicon** (Words Island)
 Scale the magnificent tower where words and meaning reached toward the sky.
 
+
+![image](https://github.com/user-attachments/assets/24a190d5-b0f9-4bf4-8931-459cd83ae05e)
+
 ## Gameplay
 
 On each island, complete challenging linguistic puzzles and activities to reclaim lost elements of language. Gather your linguistic powers as you progress, ultimately preparing to confront The Silence itself.
